@@ -4,7 +4,7 @@
  * @Date: 2021-02-19 11:03:18
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-02-19 11:36:24
+ * @LastEditTime: 2021-02-19 11:53:13
  * @Description: file content
 -->
 <!-- TOC -->
@@ -15,6 +15,11 @@
   - [3、typeof能否正确判断数据类型？instanceof 能判断对象的原理是什么](#3typeof能否正确判断数据类型instanceof-能判断对象的原理是什么)
   - [4、手写instanceof](#4手写instanceof)
   - [5、理解原型链](#5理解原型链)
+  - [6、javaScript 继承的几种实现方式](#6javascript-继承的几种实现方式)
+  - [7、null 和 undefined 的区别](#7null-和-undefined-的区别)
+  - [8、js 遍历对象和遍历数组的方式](#8js-遍历对象和遍历数组的方式)
+  - [9、数据类型相互转换规则](#9数据类型相互转换规则)
+  - [10、{} 和 [] 的 valueOf 和 toString 的结果是什么](#10-和--的-valueof-和-tostring-的结果是什么)
 
 <!-- /TOC -->
 # javaScript
@@ -66,3 +71,13 @@ js 分两种数据类型：
 理解原型链首先理解这张图：
 
 ![prototype](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3842555d9aef47af98102f763b2b88ff~tplv-k3u1fbpfcp-watermark.image)
+
+## 6、javaScript 继承的几种实现方式
+
+## 7、null 和 undefined 的区别
+
+## 8、js 遍历对象和遍历数组的方式
+
+## 9、数据类型相互转换规则
+
+## 10、{} 和 [] 的 valueOf 和 toString 的结果是什么
