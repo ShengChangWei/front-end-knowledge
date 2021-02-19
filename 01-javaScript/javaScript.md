@@ -65,4 +65,4 @@ js 分两种数据类型：
 
 理解原型链首先理解这张图：
 
-![avatar](../images/prototype.png)
+![prototype](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3842555d9aef47af98102f763b2b88ff~tplv-k3u1fbpfcp-watermark.image)
