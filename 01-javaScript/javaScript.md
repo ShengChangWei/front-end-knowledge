@@ -4,7 +4,7 @@
  * @Date: 2021-02-19 11:03:18
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-02-19 11:53:13
+ * @LastEditTime: 2021-02-20 09:08:46
  * @Description: file content
 -->
 <!-- TOC -->
@@ -71,6 +71,15 @@ js 分两种数据类型：
 理解原型链首先理解这张图：
 
 ![prototype](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3842555d9aef47af98102f763b2b88ff~tplv-k3u1fbpfcp-watermark.image)
+
+首先理解：构造函数，原型对象，实例对象之间的关系
+
+* 对象都有一个`__proto__`属性
+* 构造函数才有原型对象`prototype`
+* 实例对象`f1`是通过构造函数`Foo()``new`出来的，实例对象有一个`__proto__`属性，指向构造函数的原型对象，即`f1.__proto__ === Foo.prototype`
+* `prototype`本身也是一个对象，它也有`__proto__`,依次向上找会找到`Object.prototype`, `Object.prototype`在向上找就是`null`了，按此查找形成的链条就是原型链
+* 原型对象有一个`constructor`指向构造函数本人，构造函数也是对象，同样也就用`__proto__`指向`Function.prototype`
+* `__proto__`先指向构造函数的原型对象，最后再指向`Object.prototype`
 
 ## 6、javaScript 继承的几种实现方式
 
