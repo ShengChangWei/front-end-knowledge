@@ -4,7 +4,7 @@
  * @Date: 2021-02-19 11:03:18
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-02-22 13:26:21
+ * @LastEditTime: 2021-02-22 18:33:53
  * @Description: file content
 -->
 
@@ -28,7 +28,7 @@
 - [13. js 遍历对象和遍历数组的方式](#13-js-遍历对象和遍历数组的方式)
   - [13.1. 遍历对象](#131-遍历对象)
   - [13.2. 遍历数组](#132-遍历数组)
-- [14. valueOf 和 toString 的区别](#14-valueof-和-tostring-的区别)
+- [14. valueOf 和 toString 的区别，解析toPrimitive](#14-valueof-和-tostring-的区别解析toprimitive)
 - [15. {} 和 [] 的 valueOf 和 toString 的结果是什么](#15--和--的-valueof-和-tostring-的结果是什么)
 - [16. eval 是做什么的](#16-eval-是做什么的)
 - [17. 事件对象中的clientX offsetX screenX pageX的区别](#17-事件对象中的clientx-offsetx-screenx-pagex的区别)
@@ -99,11 +99,34 @@ js 分两种数据类型：
 
 ## 5. 什么情况下会发生布尔值的隐式强制类型转换
 
+- `if(...)`语句中的条件判断表达式
+- `for(..;..;..)`语句中的条件判断表达式
+- `while(..)`和`do..while(..)`循环中的条件判断表达式
+- 三元表达式（三目表达式）
+- 逻辑运算符 `&&` `||` `!`;
+
 ## 6. == 操作符的强制类型转换规则
+
+- `String`和`Number`之间相等比较，会先将字符串转换为数字再进行比较
+- 其他类型与`Boolean`之间相等比较,先将布尔值转换成数字，再应用其他规则进行比较
+- `null`和`undefined`之间的相等比较，结果为true。其他值和它们进行比较都返回false
+- 对象和非对象之间的相等比较，对象先调用`ToPrimitive`抽象操作后，再进行比较
+- 如果一个操作值为`NaN`,则相等比较饭回`false`（NaN本身不等于NaN）
+- 如何两个操作值都是对象，则比较它们是不是指向同一个对象。如果两个操作数都指向同一个对象，则相等比较返回`true`,否则返回`false`
 
 ## 7. 如何将字符串转化为数字，例如 '12.3b'
 
+- `Number()`：前提是所包含的字符串不包含不合法字符
+- `parseInt()`：可解析一个字符串，并返回一个整数。还可以设置要解析的数字的基数。当基数的值为 0，或没有设置该参数时，parseInt() 会根据 string 来判断数字的基数。
+- `parseFloat()`：函数解析一个字符串参数并返回一个浮点数。
+
 ## 8. || 和 && 操作符的返回值
+
+ `||`和`&&`首先会对第一个操作数进行条件判断，如果其不是布尔值就进行ToBoolean强制类型转换，然后再执行条件判断。
+
+- 对于`||`来说，如果条件判断结果为`true`就返回第一个操作数的值，如果为`false`就返回第二个操作数的值。
+- 对于`&&`来说，如果条件判断结果为`true`就返回第二个操作数的值，如果为`false`就返回第一个操作数的值
+- `||`和`&&`返回它们其中一个操作数的值，而非条件判断的结果。
 
 ## 9. typeof能否正确判断数据类型？instanceof 能判断对象的原理是什么
 
@@ -166,15 +189,42 @@ js 分两种数据类型：
 - for...in 遍历的是索引
 - for...of
 
-## 14. valueOf 和 toString 的区别
+## 14. valueOf 和 toString 的区别，解析toPrimitive
 
+- `valueOf`和`toString`几乎都是在出现操作付`(+-*/==><)`时被调用（隐式转换）
+- `toString`返回一个表示该对象的字符串，当对象表示为文本值或以期望的字符串方式被引用时，`toString`方法被自动调用。
+- `valueOf`返回当前对象的原始值。
+- `valueOf`偏向于运算，`toString`偏向于显示。
+- 在进行对象转换时，将优先调用`toString`方法，如若没有重写 `toString`，将调用 `valueOf` 方法；如果两个方法都没有重写，则按`Object`的`toString`输出。
+- 在进行强转字符串类型时，将优先调用`toString`方法，强转为数字时优先调用 `valueOf`。
+- 使用运算操作符的情况下，`valueOf`的优先级高于`toString`。
+
+[Symbol.toPrimitive]
+
+`Symbol.toPrimitive` 是一个内置的`Symbol`值，它是作为对象的函数值属性存在的，当一个对象转换为对应的原始值时，会调用此函数。
+
+- 作用：同valueOf()和toString()一样，但是优先级要高于这两者；
+- 该函数被调用时，会被传递一个字符串参数`hint`，表示当前运算的模式，一共有三种模式：
+  - string：字符串类型
+  - number：数字类型
+  - default：默认
+  
+阅读：
 <https://juejin.cn/post/6873215243804213262>
 
 ## 15. {} 和 [] 的 valueOf 和 toString 的结果是什么
 
+- {} 的`valueOf` 结果为 {}， toString的结果为"[object, Object]"
+- [] 的`valueOf`结果为 [], toString结果为 ""
+
 ## 16. eval 是做什么的
 
+- 将对应的字符串解析成`js`代码并运行
+- 应避免使用`eval`,不安全，非常耗性能（2次，一次解析成`js`语句，一次执行）
+
 ## 17. 事件对象中的clientX offsetX screenX pageX的区别
+
+<https://juejin.cn/post/6883353218319908871>
 
 ## 18. 三种事件模型是什么
 
