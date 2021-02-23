@@ -35,7 +35,7 @@
 - [18. 三种事件模型是什么](#18-三种事件模型是什么)
 - [19. 如何阻止事件冒泡](#19-如何阻止事件冒泡)
 - [20. 如何阻止事件默认行为](#20-如何阻止事件默认行为)
-- [21. 事件代理/事件委托 以及 优缺点](#21-事件代理事件委托-以及-优缺点)
+- [21. 事件代理/事件委托以及优缺点](#21-事件代理事件委托以及优缺点)
 - [22. load 和 DOMContentLoaded 事件的区别](#22-load-和-domcontentloaded-事件的区别)
 - [23. js判断图片是否加载完毕的方式](#23-js判断图片是否加载完毕的方式)
 - [24. Object.defineProperty 用法](#24-objectdefineproperty-用法)
@@ -44,10 +44,12 @@
 - [27. async await](#27-async-await)
 - [28. Event Loop 事件循环](#28-event-loop-事件循环)
 - [29. JS 跨域怎么做](#29-js-跨域怎么做)
-- [30. new 运算符的过程](#30-new-运算符的过程)
-- [31. 数组的 push() 和 pop() 方法的返回值是什么](#31-数组的-push-和-pop-方法的返回值是什么)
-- [32. JS 作用域](#32-js-作用域)
-- [33. ES6 新特性](#33-es6-新特性)
+- [30. JSONP 怎么实现的](#30-jsonp-怎么实现的)
+- [31. JOSNP 有什么优缺点](#31-josnp-有什么优缺点)
+- [32. new 运算符的过程](#32-new-运算符的过程)
+- [33. 数组的 push() 和 pop() 方法的返回值是什么](#33-数组的-push-和-pop-方法的返回值是什么)
+- [34. JS 作用域](#34-js-作用域)
+- [35. ES6 新特性](#35-es6-新特性)
 
 <!-- /TOC -->
 ## 1. js数据类型
@@ -240,32 +242,194 @@ js 分两种数据类型：
 
 ## 18. 三种事件模型是什么
 
+* `DOM0`级模型，这种模型不会传播，所以没有事件流概念，但是现在有的浏览器支持一冒泡的方式实现，它可以在网页中直接定义监听函数，也可以通过`js`属性来指定监听函数。这种方式是所有浏览器都兼容
+
+* `IE`事件模型，在该事件模型中，一共事件有两个过程，事件处理阶段和事件冒泡阶段。事件处理阶段会首先执行目标元素绑定的监听事件。然后是事件冒泡阶段，冒泡指的是事件从目标元素冒泡到document,，依次检查经过的节点是否绑定了事件监听函数，如果有则执行。这种模型通过attachEvent来添加监听函数，可以添加多个监听函数，会按顺序依次执行。
+
+* 第三种是`DOM2`级事件模型，在该事件模型中，一次事件共有三个过程，第一个过程是事件捕获阶段。捕获指的是事件从document一直向下传播到目标元素，依次检查经过的节点是否绑定了事件监听函数，如果有则执行。后面两个阶段和`IE`事件模型的两个阶段相同。这种事件模型，事件绑定的函数是addEventListener, 其中第三个参数可以指定事件是否在捕获阶段执行。默认是false，在冒泡阶段执行
+
 ## 19. 如何阻止事件冒泡
+
+要求：知道单词怎读
+
+```js
+// w3c
+e.stopPropagation();
+
+// IE
+e.cancelBubble = true;
+```
 
 ## 20. 如何阻止事件默认行为
 
-## 21. 事件代理/事件委托 以及 优缺点
+```js
+// google、IE8以上
+e.preventDefault();
+
+// IE8及以下
+window.event.returnValue = false;
+
+// 无兼容问题（但不能用于节点直接onclick绑定函数）
+return false;
+```
+
+## 21. 事件代理/事件委托以及优缺点
+
+```shell
+事件委托：本质上是利用浏览器事件冒泡机制。因为事件在冒泡过程中会上传到父节点，并且父节点可以通过事件对象获取到目标节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件，这种方式称为事件委托。
+```
+* 优点：
+  * 减少内存消耗，不必为大量元素绑定事件
+  * 可以为动态添加的元素绑定事件
+* 缺点：
+  * 部分事件如`focus`、`blur`等无冒泡机制，所以无法委托。
+  * 事件委托有对子元素的查找过程，委托层级过深，可能会有性能问题。
+  * 频繁触发的事件如`mousemove`、`mouseout`、`mouseover`等，不适合事件委托
+
 
 ## 22. load 和 DOMContentLoaded 事件的区别
 
+* `load`: 当整个页面以及所有依赖资源如样式表和图片都已加载完成，才会触发load事件
+* `DOMContentLoaded`: 只要页面`DOM`加载完成就触发，无需等待依赖资源的加载
+
 ## 23. js判断图片是否加载完毕的方式
+
+* `load`事件：`img`元素有一个`load`事件可以用来判断图片是否加载完毕
+* `readystatechange`事件:`readyState`为`complete`和`loaded`则表明图片已经加载完毕。测试IE6-IE10支持该事件，其它浏览器不支持。
+* `img`的`complete`属性 `img.complete = true`则表明图片已经加载完毕
 
 ## 24. Object.defineProperty 用法
 
+```js
+Object.defineProperty(obj, prop, descriptor)
+
+const obj = {};
+
+Object.defineProperty(obj, 'property', {
+  value: 42,
+  writable: false
+});
+
+obj.property = 77;
+// throws an error in strict mode
+
+console.log(obj.property);
+// expected output: 42
+```
+
+* `obj`要定义属性的对象。
+* `prop` 要定义或修改的属性的名称或`Symbol`。
+* `descriptor` 要定义或修改的属性描述符。参数有:
+  * `value` 该属性对应的值。可以是任何有效的`JavaScript`值（数值，对象，函数等）。默认为`undefined`
+  * `writable` 当且仅当该属性的 `writable` 键值为`true`时，属性的值，也就是上面的 `value`，才能被赋值运算符改变。 默认为 `false`。
+  * `configurable`当且仅当该属性的`configurable`键值为`true`时，该属性的描述符才能够被改变，同时该属性也能从对应的对象上被删除。 默认为`false`。
+  * `enumerable` 当且仅当该属性的`enumerable`键值为`true`时，该属性才会出现在对象的枚举属性中。默认为`false`
+
+
 ## 25. js 延迟加载的方式有哪些
+
+```shell
+js 延迟加载，也就是等页面加载完成后再加载javaScript文件。js延迟加载有助于提高页面加载速度。
+```
+一般有以下几种方式：
+
+* `defer`属性
+* `async`属性
+* 动态创建`DOM`方式
+* 使用`setTimeout`延迟方法
+* 让`js`最后加载
 
 ## 26. js 脚本 defer 和 async 的区别
 
+* `defer``延迟执行引入`的脚本，脚本的`加载`与`HTML`解析两者是并行的，只有当整个`document`解析完毕后再`执行`,在`DOMContentLoaded`事件触发之前完成。多个脚本按顺序执行。
+* `async`属性表示`异步执行引入`的javaScript,与`defer`的区别在于，如果已经加载好，就开始执行，也就是说它的执行仍然会阻塞文档的解析，只是它的加载过程不会阻塞。多个脚本的执行顺序无法保证。
+
 ## 27. async await
+
+```shell
+官网：async函数返回一个 Promise 对象，可以使用then方法添加回调函数。当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。
+```
+* `async`单独使用的时候，放在函数前面表示这个函数是一个异步函数，如果`async`函数有返回结果，必须要用`.then()`方法来承接（也就是返回的值会被自动处理成`promise`对象）
+
+```js
+async function bar() {
+  return 0
+}
+bar.then(data => {
+  console.log(data)
+})
+```
+* `async``await`搭配使用的时候，`await`是等待此函数执行后，再执行下一个，可以把异步函数变成同步来执行，控制函数的执行顺序。`await`一定要搭配`async`使用。
+
+```js
+let foo = () => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      console.log(0);
+      resolve();
+    }, 1000);
+  })
+}
+
+async function bar() {
+  await foo();
+  console.log(1);
+}
+console.log(bar()); // 隔1秒同时输出 0 1
+```
+
+* 当`await`后跟的是普通函数（非`promise()`）
+
+```js
+let f1 = () => {
+  setTimeout(() => {
+    console.log(0);
+  }, 1000)
+}
+
+let f2 = () => {
+  setTimeout(() => {
+    console.log(1);
+  }, 1000)
+}
+
+async function bar() {
+  await f1();
+  await f2();
+  console.log(3);
+}
+
+console.log(bar()); // 3 隔1秒同时输出 0 1
+```
 
 ## 28. Event Loop 事件循环
 
 ## 29. JS 跨域怎么做
 
-## 30. new 运算符的过程
+```shell
+什么是跨域？当一个请求url的 协议、域名、端口三者之间任意一个与当前页面url不同即为跨域。
+```
+* `JSONP`(JSON with Padding) 通过动态创建`script`，再请求一个带参网址实现跨域通信。
+* `CORS` (跨域资源共享)`CORS`的基本思想就是使用自定义的`HTTP`头部让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。
 
-## 31. 数组的 push() 和 pop() 方法的返回值是什么
+```shell
+普通跨域请求：只需服务端设置 Access-Control-Allow-Origin 即可，前端无须设置，若要带 cookie 请求：前后端都需要设置。前端设置withCredentials为true,后端设置Access-Control-Allow-Credentials为true,同时Access-Control-Allow-Origin不能设置为*
+目前，所有浏览器都支持该功能(IE8+；IE8/9 需要使用 XDomainRequest 对象来支持 CORS)，CORS 也已经成为主流的跨域解决方案。
+```
+* `window.postMessage` 现代浏览器中多窗口通信使用 `HTML5` 规范的` targetWindow.postMessage(data, origin)`;其中 `data` 是需要发送的对象，`origin` 是目标窗口的 `origin`。`window.addEventListener('message', handler, false)`;`handler` 的 `event.data` 是 `postMessage` 发送来的数据，`event.origin` 是发送窗口的`origin`，`event.source` 是发送消息的窗口引用
+* 服务器代理 内部服务器代理请求跨域` url`，然后返回数据
 
-## 32. JS 作用域
+## 30. JSONP 怎么实现的
+## 31. JOSNP 有什么优缺点
+## 32. new 运算符的过程
 
-## 33. ES6 新特性
+* 创建一个空对象{}；
+* 构造函数中的 this 指向该空对象
+* 执行构造函数为这个空对象添加属性
+* 判断构造函数有没有返回值，如果返回值是个对象，则返回这个对象；否则返回创建的“空对象”
+
+## 33. 数组的 push() 和 pop() 方法的返回值是什么
+
+## 34. JS 作用域
+
+## 35. ES6 新特性
