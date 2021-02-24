@@ -4,7 +4,7 @@
  * @Date: 2021-02-19 11:03:18
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-02-22 18:33:53
+ * @LastEditTime: 2021-02-23 18:10:11
  * @Description: file content
 -->
 
@@ -48,8 +48,25 @@
 - [31. 数组的 push() 和 pop() 方法的返回值是什么](#31-数组的-push-和-pop-方法的返回值是什么)
 - [32. JS 作用域](#32-js-作用域)
 - [33. ES6 新特性](#33-es6-新特性)
+- [34. let 和 var 的区别](#34-let-和-var-的区别)
+- [35. 闭包的特性以及优缺点](#35-闭包的特性以及优缺点)
+- [36. 箭头函数与普通函数的区别](#36-箭头函数与普通函数的区别)
+- [37. ES6 中箭头函数 VS 普通函数的 this 指向](#37-es6-中箭头函数-vs-普通函数的-this-指向)
+- [38. JS 实现对象（都是简单类型的值）的深拷贝](#38-js-实现对象都是简单类型的值的深拷贝)
+- [39. JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题](#39-jsonparsejsonstringifyobj-实现深拷贝需要注意的问题)
+- [40. Promise 是做什么的，有哪些API](#40-promise-是做什么的有哪些api)
+- [41. Promise不兼容怎么解决](#41-promise不兼容怎么解决)
+- [42. Ajax 基本流程](#42-ajax-基本流程)
+- [43. Ajax 的 readyState 的几种状态分别代表什么](#43-ajax-的-readystate-的几种状态分别代表什么)
+- [44. Ajax 禁用浏览器的缓存功能](#44-ajax-禁用浏览器的缓存功能)
+- [45. 谈谈对前端工程化的理解](#45-谈谈对前端工程化的理解)
+- [46. js 的几种模块规范](#46-js-的几种模块规范)
+- [47. ES6 模块与 CommonJS 模块、AMD、CMD 的差异](#47-es6-模块与-commonjs-模块amdcmd-的差异)
 
 <!-- /TOC -->
+
+本文主要学习来源：https://github.com/lf2021/Front-End-Interview 非常感谢
+
 ## 1. js数据类型
 
 js 分两种数据类型：
@@ -269,3 +286,31 @@ js 分两种数据类型：
 ## 32. JS 作用域
 
 ## 33. ES6 新特性
+
+## 34. let 和 var 的区别
+
+## 35. 闭包的特性以及优缺点
+
+## 36. 箭头函数与普通函数的区别
+
+## 37. ES6 中箭头函数 VS 普通函数的 this 指向
+
+## 38. JS 实现对象（都是简单类型的值）的深拷贝
+
+## 39. JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
+
+## 40. Promise 是做什么的，有哪些API
+
+## 41. Promise不兼容怎么解决
+
+## 42. Ajax 基本流程
+
+## 43. Ajax 的 readyState 的几种状态分别代表什么
+
+## 44. Ajax 禁用浏览器的缓存功能
+
+## 45. 谈谈对前端工程化的理解
+
+## 46. js 的几种模块规范
+
+## 47. ES6 模块与 CommonJS 模块、AMD、CMD 的差异
