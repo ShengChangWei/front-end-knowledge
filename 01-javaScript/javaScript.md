@@ -49,34 +49,35 @@
 - [32. new 运算符的过程](#32-new-运算符的过程)
 - [33. 数组的 push() 和 pop() 方法的返回值是什么](#33-数组的-push-和-pop-方法的返回值是什么)
 - [34. JS 作用域](#34-js-作用域)
-- [35. ES6 新特性](#35-es6-新特性)
+- [35. ES6 新特性（知道越多越好，模糊不清的就不要说了）](#35-es6-新特性知道越多越好模糊不清的就不要说了)
 - [36. let 和 var 的区别](#36-let-和-var-的区别)
 - [37. 闭包的特性以及优缺点](#37-闭包的特性以及优缺点)
 - [38. 箭头函数与普通函数的区别](#38-箭头函数与普通函数的区别)
 - [39. ES6 中箭头函数 VS 普通函数的 this 指向](#39-es6-中箭头函数-vs-普通函数的-this-指向)
 - [40. JS 实现对象（都是简单类型的值）的深拷贝](#40-js-实现对象都是简单类型的值的深拷贝)
 - [41. JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题](#41-jsonparsejsonstringifyobj-实现深拷贝需要注意的问题)
-- [42. Promise 是做什么的，有哪些API](#42-promise-是做什么的有哪些api)
-  - [42.1. Promise用法](#421-promise用法)
-  - [42.2. Promise.prototype.then()](#422-promiseprototypethen)
-  - [42.3. Promise.prototype.catch()](#423-promiseprototypecatch)
-  - [42.4. Promise.all()](#424-promiseall)
-  - [42.5. Promise.race()](#425-promiserace)
-  - [42.6. Promise.resolve()](#426-promiseresolve)
-  - [42.7. Promise.reject()](#427-promisereject)
-- [43. Promise不兼容怎么解决](#43-promise不兼容怎么解决)
-- [44. Ajax 基本流程](#44-ajax-基本流程)
-- [45. Ajax 的 readyState 的几种状态分别代表什么](#45-ajax-的-readystate-的几种状态分别代表什么)
-- [46. Ajax 禁用浏览器的缓存功能](#46-ajax-禁用浏览器的缓存功能)
-- [47. 谈谈对前端工程化的理解](#47-谈谈对前端工程化的理解)
-- [48. js 的几种模块规范](#48-js-的几种模块规范)
-- [49. ES6 模块与 CommonJS 模块、AMD、CMD 的差异](#49-es6-模块与-commonjs-模块amdcmd-的差异)
-- [50. webpack 的功能](#50-webpack-的功能)
-- [51. webpack 常用插件](#51-webpack-常用插件)
-- [52. arguments怎么转化成真数组](#52-arguments怎么转化成真数组)
-- [53. js的对象的常用的方法](#53-js的对象的常用的方法)
-- [54. js的字符串的常用的方法](#54-js的字符串的常用的方法)
-- [55. js的数组的常用的方法](#55-js的数组的常用的方法)
+- [42. 手动实现一个深拷贝](#42-手动实现一个深拷贝)
+- [43. Promise 是做什么的，有哪些API](#43-promise-是做什么的有哪些api)
+  - [43.1. Promise用法](#431-promise用法)
+  - [43.2. Promise.prototype.then()](#432-promiseprototypethen)
+  - [43.3. Promise.prototype.catch()](#433-promiseprototypecatch)
+  - [43.4. Promise.all()](#434-promiseall)
+  - [43.5. Promise.race()](#435-promiserace)
+  - [43.6. Promise.resolve()](#436-promiseresolve)
+  - [43.7. Promise.reject()](#437-promisereject)
+- [44. Promise不兼容怎么解决](#44-promise不兼容怎么解决)
+- [45. Ajax 基本流程](#45-ajax-基本流程)
+- [46. Ajax 的 readyState 的几种状态分别代表什么](#46-ajax-的-readystate-的几种状态分别代表什么)
+- [47. Ajax 禁用浏览器的缓存功能](#47-ajax-禁用浏览器的缓存功能)
+- [48. 谈谈对前端工程化的理解](#48-谈谈对前端工程化的理解)
+- [49. js 的几种模块规范](#49-js-的几种模块规范)
+- [50. ES6 模块与 CommonJS 模块、AMD、CMD 的差异](#50-es6-模块与-commonjs-模块amdcmd-的差异)
+- [51. webpack 的功能](#51-webpack-的功能)
+- [52. webpack 常用插件](#52-webpack-常用插件)
+- [53. arguments怎么转化成真数组](#53-arguments怎么转化成真数组)
+- [54. js的对象的常用的方法](#54-js的对象的常用的方法)
+- [55. js的字符串的常用的方法](#55-js的字符串的常用的方法)
+- [56. js的数组的常用的方法](#56-js的数组的常用的方法)
 
 <!-- /TOC -->
 
@@ -469,60 +470,133 @@ console.log(bar()); // 3 隔1秒同时输出 0 1
 
 ## 33. 数组的 push() 和 pop() 方法的返回值是什么
 
+- `push()`将一个或多个元素添加到数组的末尾，并返回该数组的新长度
+- `pop()`方法从数组中删除最后一个元素，并返回该元素的值
+
 ## 34. JS 作用域
 
-## 35. ES6 新特性
+- `ES5`只有全局作用域和函数作用域
+  - 全局作用域：代码在程序的任何地方都能被访问，`window`对象的内置属性都存在全局作用域
+  - 函数作用域：在固定的代码片段才能被访问
+- ES6有块级作用域
+
+## 35. ES6 新特性（知道越多越好，模糊不清的就不要说了）
+
+- `let` `const` 块级作用域
+- 箭头函数
+- 新增一个基本数据类型：`Symbol`表示唯一的
+- 模板字符串
+- 解构赋值
+- 扩展运算符（...）
+- promise
+- proxy
+- 模块化
+- async
+- class
 
 ## 36. let 和 var 的区别
 
+- `var`是函数作用域，`let`是块级作用域
+- `var`存在变量提升，`let`没有变量提升
+- 在代码块中，使用`let`命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（TDZ）
+
 ## 37. 闭包的特性以及优缺点
+
+```js
+function test() {
+  var age = 18;
+  function addAage() {
+    age++;
+    alert(age)
+  }
+  return addAge;
+}
+```
+
+闭包有三个特性：
+
+- 函数里面嵌套函数
+- 内部的函数使用外部函数的参数和变量
+- 参数和变量不会被垃圾回收机制回收
+
+闭包的优点：
+
+- 希望一个变量长期保存内存中
+- 避免全局变量污染
+- 私有成员的存在
+闭包的缺点：
+
+- 不会被垃圾回收机制回收，增加内存的使用量，使用不当造成内存泄漏
 
 ## 38. 箭头函数与普通函数的区别
 
+- 箭头函数是匿名函数，不能作为构造函数，不能使用`new`关键字
+- 箭头函数没有`arguments`,可以使用`rest`参数...解决
+- 箭头函数没有原型属性
+- 箭头函数的`this`永远指向其上下文的`this`,没有办法改变其指向，普通函数的`this`指向调用它的对象
+- 箭头函数不能绑定`this`,会捕获其所在的上下文的`this`值，作为自己的`this`值
+
 ## 39. ES6 中箭头函数 VS 普通函数的 this 指向
+
+* 普通函数中`this`
+  * 总是代表着它的直接调用者，如`obj.fn`, `fn`里的最外层`this`就是指向`obj`
+  * 默认情况下，没有直接调用者，`this`指向`window`
+  * 严格模式下（设置了`use strict`）, `this`为`undefined`
+  * 当使用`call`, `apply`,`bind`（ES5新增）绑定的，`this`指向绑定对象
+
+* `ES6`箭头函数中`this`
+
+  * 默认指向定义它时，所处上下文的对象`this`指向，即 `ES6` 箭头函数里`this`的指向就是上下文里对象`this`指向，偶尔没有上下文对象，`this`就指向`window`
+
 
 ## 40. JS 实现对象（都是简单类型的值）的深拷贝
 
+```js
+let newObj = JSON.parse(JSON.stringfy(oldObj))
+```
+
 ## 41. JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
 
-## 42. Promise 是做什么的，有哪些API
+## 42. 手动实现一个深拷贝
 
-### 42.1. Promise用法
+## 43. Promise 是做什么的，有哪些API
 
-### 42.2. Promise.prototype.then()
+### 43.1. Promise用法
 
-### 42.3. Promise.prototype.catch()
+### 43.2. Promise.prototype.then()
 
-### 42.4. Promise.all()
+### 43.3. Promise.prototype.catch()
 
-### 42.5. Promise.race()
+### 43.4. Promise.all()
 
-### 42.6. Promise.resolve()
+### 43.5. Promise.race()
 
-### 42.7. Promise.reject()
+### 43.6. Promise.resolve()
 
-## 43. Promise不兼容怎么解决
+### 43.7. Promise.reject()
 
-## 44. Ajax 基本流程
+## 44. Promise不兼容怎么解决
 
-## 45. Ajax 的 readyState 的几种状态分别代表什么
+## 45. Ajax 基本流程
 
-## 46. Ajax 禁用浏览器的缓存功能
+## 46. Ajax 的 readyState 的几种状态分别代表什么
 
-## 47. 谈谈对前端工程化的理解
+## 47. Ajax 禁用浏览器的缓存功能
 
-## 48. js 的几种模块规范
+## 48. 谈谈对前端工程化的理解
 
-## 49. ES6 模块与 CommonJS 模块、AMD、CMD 的差异
+## 49. js 的几种模块规范
 
-## 50. webpack 的功能
+## 50. ES6 模块与 CommonJS 模块、AMD、CMD 的差异
 
-## 51. webpack 常用插件
+## 51. webpack 的功能
 
-## 52. arguments怎么转化成真数组
+## 52. webpack 常用插件
 
-## 53. js的对象的常用的方法
+## 53. arguments怎么转化成真数组
 
-## 54. js的字符串的常用的方法
+## 54. js的对象的常用的方法
 
-## 55. js的数组的常用的方法
+## 55. js的字符串的常用的方法
+
+## 56. js的数组的常用的方法
