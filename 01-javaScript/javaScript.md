@@ -538,16 +538,15 @@ function test() {
 
 ## 39. ES6 中箭头函数 VS 普通函数的 this 指向
 
-* 普通函数中`this`
-  * 总是代表着它的直接调用者，如`obj.fn`, `fn`里的最外层`this`就是指向`obj`
-  * 默认情况下，没有直接调用者，`this`指向`window`
-  * 严格模式下（设置了`use strict`）, `this`为`undefined`
-  * 当使用`call`, `apply`,`bind`（ES5新增）绑定的，`this`指向绑定对象
+- 普通函数中`this`
+  - 总是代表着它的直接调用者，如`obj.fn`, `fn`里的最外层`this`就是指向`obj`
+  - 默认情况下，没有直接调用者，`this`指向`window`
+  - 严格模式下（设置了`use strict`）, `this`为`undefined`
+  - 当使用`call`, `apply`,`bind`（ES5新增）绑定的，`this`指向绑定对象
 
-* `ES6`箭头函数中`this`
+- `ES6`箭头函数中`this`
 
-  * 默认指向定义它时，所处上下文的对象`this`指向，即 `ES6` 箭头函数里`this`的指向就是上下文里对象`this`指向，偶尔没有上下文对象，`this`就指向`window`
-
+  - 默认指向定义它时，所处上下文的对象`this`指向，即 `ES6` 箭头函数里`this`的指向就是上下文里对象`this`指向，偶尔没有上下文对象，`this`就指向`window`
 
 ## 40. JS 实现对象（都是简单类型的值）的深拷贝
 
