@@ -556,11 +556,27 @@ let newObj = JSON.parse(JSON.stringfy(oldObj))
 
 ## 41. JSON.parse(JSON.stringify(obj)) 实现深拷贝需要注意的问题
 
+- 如果`obj`里面有时间对象，则序列化后，时间将只是字符串的形式，而不是时间对象。
+- 如果`obj`里有`RegExp`、`Error`对象，则序列化的结果将只得到空对象
+- 如果`obj`里面有函数、`undefined`,则序列化结果会吧函数或`undefined`丢失
+- 如果`obj`里面有`NaN`、`Infinity`和`-Infinity`，则序列化的结果会变成`null`
+- 如果`obj`中的对象是有构造函数生成的，则序列化后，会丢弃对象的`constructor`
+- 如果对象中存在循环引用的情况也无法正常实现深拷贝
+
 ## 42. 手动实现一个深拷贝
 
 ## 43. Promise 是做什么的，有哪些API
 
+- `Promise`是异步编程的一种解决方案
+
 ### 43.1. Promise用法
+
+```shell
+Promise是一个构造函数接受一个函数作为参数，该函数的两个参数分别是resove和reject。它们是两个函数，由JavaScript引擎提供，不用自己部署
+```
+
+- `resolve`函数作用是，将`Promise`对象的状态从“未完成”变成“成功”（即从`pending`变成`resolved`），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去。
+- `reject`函数的作用是，将`Promise`对象的状态从“未完成”变成“失败”（即从`pending`变成`rejected`），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去
 
 ### 43.2. Promise.prototype.then()
 
@@ -575,6 +591,12 @@ let newObj = JSON.parse(JSON.stringfy(oldObj))
 ### 43.7. Promise.reject()
 
 ## 44. Promise不兼容怎么解决
+
+用一些第三方的库来解决兼容性问题：
+
+- babel-polyfill
+- ES6-Promise
+- bluebird
 
 ## 45. Ajax 基本流程
 
