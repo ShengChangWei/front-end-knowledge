@@ -66,18 +66,18 @@
   - [43.6. Promise.resolve()](#436-promiseresolve)
   - [43.7. Promise.reject()](#437-promisereject)
 - [44. Promise不兼容怎么解决](#44-promise不兼容怎么解决)
-- [45. Ajax 基本流程](#45-ajax-基本流程)
+- [45. Ajax 基本流程（步骤）](#45-ajax-基本流程步骤)
 - [46. Ajax 的 readyState 的几种状态分别代表什么](#46-ajax-的-readystate-的几种状态分别代表什么)
 - [47. Ajax 禁用浏览器的缓存功能](#47-ajax-禁用浏览器的缓存功能)
-- [48. 谈谈对前端工程化的理解](#48-谈谈对前端工程化的理解)
-- [49. js 的几种模块规范](#49-js-的几种模块规范)
-- [50. ES6 模块与 CommonJS 模块、AMD、CMD 的差异](#50-es6-模块与-commonjs-模块amdcmd-的差异)
-- [51. webpack 的功能](#51-webpack-的功能)
-- [52. webpack 常用插件](#52-webpack-常用插件)
-- [53. arguments怎么转化成真数组](#53-arguments怎么转化成真数组)
-- [54. js的对象的常用的方法](#54-js的对象的常用的方法)
-- [55. js的字符串的常用的方法](#55-js的字符串的常用的方法)
-- [56. js的数组的常用的方法](#56-js的数组的常用的方法)
+- [48. js 的几种模块规范](#48-js-的几种模块规范)
+- [49. ES6 模块与 CommonJS 模块、AMD、CMD 的差异](#49-es6-模块与-commonjs-模块amdcmd-的差异)
+- [50. webpack 的功能](#50-webpack-的功能)
+- [51. webpack 常用插件](#51-webpack-常用插件)
+- [52. arguments怎么转化成真数组](#52-arguments怎么转化成真数组)
+- [53. js的对象的常用的方法](#53-js的对象的常用的方法)
+- [54. js的字符串的常用的方法](#54-js的字符串的常用的方法)
+- [55. js的数组的常用的方法](#55-js的数组的常用的方法)
+- [56. 谈谈对前端工程化的理解](#56-谈谈对前端工程化的理解)
 
 <!-- /TOC -->
 
@@ -260,7 +260,7 @@ js 分两种数据类型：
 ## 15. {} 和 [] 的 valueOf 和 toString 的结果是什么
 
 - {} 的`valueOf` 结果为 {}， toString的结果为"[object, Object]"
-- [] 的`valueOf`结果为 [], toString结果为 ""
+- [ ] 的`valueOf`结果为 [], toString结果为 ""
 
 ## 16. eval 是做什么的
 
@@ -580,15 +580,65 @@ Promise是一个构造函数接受一个函数作为参数，该函数的两个�
 
 ### 43.2. Promise.prototype.then()
 
+```shell
+Promise是实例具有then的方法，也就是说，then方法定义在Promise.prototype上的，它的作用是为Promise实例添加状态改变时的回调函数。then 方法的第一个参数是resolved状态的回调函数，第二个参数（可选）是rejected状态的回调函数
+
+then 方法返回一个新的 Promise 实例，因此可以采用链式写法
+```
+
 ### 43.3. Promise.prototype.catch()
+
+```shell
+Promise.prototype.catch() 用于指定发生错误时的回调函数，相当于.then(null/undefined, reject)
+```
 
 ### 43.4. Promise.all()
 
+- Promise.all() 用于将多个Promise实例，包装成一个新的Promise实例
+- 接受一个数组作为参数，Promise.all()方法的参数可以不是数组，但必须具有Iterator接口
+- 只有所有的Promise实例状态变成fufilled，这个新的Promise实例才会变成fulfilled,返回的是一个数组，其中有一个呗rejected,新的Promise实例状态就会鞭策rejected
+
 ### 43.5. Promise.race()
+
+```shell
+Promise.race()方法同样是将多个 Promise 实例，包装成一个新的 Promise 实例。
+```
+
+```js
+const p = Promise.race([p1, p2, p3]);
+```
+
+上面代码中，只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。
 
 ### 43.6. Promise.resolve()
 
+```shell
+有时需要将现有对象转为 Promise 对象，Promise.resolve()方法就起到这个作用。
+Promise.resolve()等价于下面的写法。
+```
+
+```js
+Promise.resolve('foo')
+// 等价于
+new Promise(resolve => resolve('foo'))
+```
+
 ### 43.7. Promise.reject()
+
+```shell
+Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。
+```
+
+```js
+const p = Promise.reject('出错了');
+// 等同于
+const p = new Promise((resolve, reject) => reject('出错了'))
+
+p.then(null, function (s) {
+  console.log(s)
+});
+// 出错了
+```
 
 ## 44. Promise不兼容怎么解决
 
@@ -598,26 +648,85 @@ Promise是一个构造函数接受一个函数作为参数，该函数的两个�
 - ES6-Promise
 - bluebird
 
-## 45. Ajax 基本流程
+## 45. Ajax 基本流程（步骤）
+
+- 创建一个`XMlHttpRequest`异步对象
+
+- 设置请求方式和请求地址
+
+- 用`send`发送请求
+
+- 监听状态变化
+
+- 接收返回的数据
+
+```js
+// 创建一个异步对象
+const xhr = new XMLHttpRequest()
+
+// 设置请求方法和地址
+xhr.open('get', 'xxxx')
+
+// 发送请求
+xhr.send();
+
+// 监听状态变化
+xhr.onreadystatechange = function() {
+  if(request.readyState === 4 && xhr.status === 200) {
+    // 数据返回成功并接收数据
+  }
+}
+
+```
 
 ## 46. Ajax 的 readyState 的几种状态分别代表什么
 
+- `0` 请求未初始化
+- `1` 服务器连接已建立
+- `2` 请求已接收
+- `3` 请求处理中
+- `4` 请求已完成，且响应已就绪
+
 ## 47. Ajax 禁用浏览器的缓存功能
 
-## 48. 谈谈对前端工程化的理解
+```shell
+当我们提交的URL和历史的URL一致是，就不需要提交给服务器，也就是不需要从服务器上面去获取数据，虽然这样降低了服务器的负载提高了用户体验，但是我们不能获取最新的数据
+```
 
-## 49. js 的几种模块规范
+解决的方法
 
-## 50. ES6 模块与 CommonJS 模块、AMD、CMD 的差异
+- 发送请求前设置：`xhr.setRequestHeader("If-Modified-Since","0")`
+- 发送请求前设置：`xhr.setRequestHeader("Cache-Control","no-cache")`
+- `URL`地址加上一个随机数
+- `URL`地址上加上一个时间戳
 
-## 51. webpack 的功能
+## 48. js 的几种模块规范
 
-## 52. webpack 常用插件
+js中比较成熟的有四种模块加载方案
 
-## 53. arguments怎么转化成真数组
+* `CommonJS` 它通过`require`来引入模块，通过`modue.exports`定义模块的输出接口。。这种模块加载方案是
+服务器端的解决方案，它是以同步的方式来引入模块的，因为在服务端文件都存储在本地磁盘，所以读取非常快，所以以同步的方式
+加载没有问题。但如果是在浏览器端，由于模块的加载是使用网络请求，因此使用异步加载的方式更加合适。
 
-## 54. js的对象的常用的方法
+* `AMD` 这种方案采用异步加载的方式来加载模块，模块的加载不影响后面语句的执行，所有依赖这个模块的语句都定义在一个回调函数里，等到加载完成后再执行回调函数。`require.js` 实现了 `AMD` 规范。
 
-## 55. js的字符串的常用的方法
+* `CMD` 这种方案和 `AMD` 方案都是为了解决异步模块加载的问题，`sea.js` 实现了 `CMD` 规范。它和 `require.js`的区别在于模块定义时对依赖的处理不同和对依赖模块的执行时机的处理不同。
 
-## 56. js的数组的常用的方法
+* `ES6` 使用`import`和`export`的形式来导入导出模块。这种方案和上面三种方案都不同。  
+
+
+## 49. ES6 模块与 CommonJS 模块、AMD、CMD 的差异
+
+## 50. webpack 的功能
+
+## 51. webpack 常用插件
+
+## 52. arguments怎么转化成真数组
+
+## 53. js的对象的常用的方法
+
+## 54. js的字符串的常用的方法
+
+## 55. js的数组的常用的方法
+
+## 56. 谈谈对前端工程化的理解
