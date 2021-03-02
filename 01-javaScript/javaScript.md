@@ -704,29 +704,124 @@ xhr.onreadystatechange = function() {
 
 js中比较成熟的有四种模块加载方案
 
-* `CommonJS` 它通过`require`来引入模块，通过`modue.exports`定义模块的输出接口。。这种模块加载方案是
+- `CommonJS` 它通过`require`来引入模块，通过`modue.exports`定义模块的输出接口。。这种模块加载方案是
 服务器端的解决方案，它是以同步的方式来引入模块的，因为在服务端文件都存储在本地磁盘，所以读取非常快，所以以同步的方式
 加载没有问题。但如果是在浏览器端，由于模块的加载是使用网络请求，因此使用异步加载的方式更加合适。
 
-* `AMD` 这种方案采用异步加载的方式来加载模块，模块的加载不影响后面语句的执行，所有依赖这个模块的语句都定义在一个回调函数里，等到加载完成后再执行回调函数。`require.js` 实现了 `AMD` 规范。
+- `AMD` 这种方案采用异步加载的方式来加载模块，模块的加载不影响后面语句的执行，所有依赖这个模块的语句都定义在一个回调函数里，等到加载完成后再执行回调函数。`require.js` 实现了 `AMD` 规范。
 
-* `CMD` 这种方案和 `AMD` 方案都是为了解决异步模块加载的问题，`sea.js` 实现了 `CMD` 规范。它和 `require.js`的区别在于模块定义时对依赖的处理不同和对依赖模块的执行时机的处理不同。
+- `CMD` 这种方案和 `AMD` 方案都是为了解决异步模块加载的问题，`sea.js` 实现了 `CMD` 规范。它和 `require.js`的区别在于模块定义时对依赖的处理不同和对依赖模块的执行时机的处理不同。
 
-* `ES6` 使用`import`和`export`的形式来导入导出模块。这种方案和上面三种方案都不同。  
-
+- `ES6` 使用`import`和`export`的形式来导入导出模块。这种方案和上面三种方案都不同。  
 
 ## 49. ES6 模块与 CommonJS 模块、AMD、CMD 的差异
 
+- `CommonJS`模块输出的是一个值得拷贝，`ES6`模块输出的是值的引用
+- `CommonJS`模块输出的是值的拷贝，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。`ES6`模块运行机制与`CommonJS`不一样。`JS`引擎对脚本静态分析的时候，遇到模块加载命令`import`，就会生成一个只读引用。等到脚本真正执行时，再根据这个只读引用到被加载的那个模块里面去取值。
+
+- `CommonJS`模块是运行时加载，`ES6`模块是编译时输出接口。
+
 ## 50. webpack 的功能
+
+> 主要原理：
+
+`webpack`它将所有资源都看成是一个模块，并且把页面逻辑当作一个整体，通过一个给定的入口文件，`webpack`从这个文件开始，找到所有的依赖文件，将各个依赖文件模块通过`loader`和`plugins`处理后，然后打包在一起，最后输出一个浏览器可识别的`JS`文件
+
+> 四个核心概念：
+
+分别是`Entry（入口）、Output（输出）、loader（加载器）、plugins（插件）`
+
+- `Entry`是`webpack`的入口起点，它指示`webpack`应该从哪个模块开始着手，来构建内部依赖图开始。
+- `Output`属性告诉`webpack`在哪里输出它所创建的打包文件，也可指定打包文件的名称，默认位置`./dist`。
+- `loader`可以理解为`webpack`的编译器，它使得 webpack 可以处理一些非 JavaScript 文件。在对 loader 进行配置的时候：
+  - `test` 属性，标志有哪些后缀的文件应该被处理，是一个正则表达式。
+  - `use` 属性，指定 `test` 类型的文件应该使用哪个 `loader` 进行预处理。常用的 `loader` 有 `css-loader`、`style-loader` 等。
+- `Plugins`（插件）可以用于执行范围更广的任务，包括打包、优化、压缩、搭建服务器等等，要使用一个插件，一般是先使用 `npm` 包管理器进行安装，然后在配置文件中引入，最后将其实例化后传递给 `plugins` 数组属性。
 
 ## 51. webpack 常用插件
 
+- html-webpack-plugin
+用于生成一个html文件，并将最终生成的js，css以及一些静态资源文件以script和link的形式动态插入其中
+- webpack-dev-server
+用于实时的打包编译 打包好的 main.js 是托管到了内存中，所以在项目根目录中看不到，但是我们可以认为在项目的根目录中，有一个看不见的 main.js
+- CommonsChunkPlugin
+主要是用来提取第三方库（如jQuery）和公共模块(公共js，css都可以)，常用于多页面应用程序，生成公共 chunk，避免重复引用。
+
 ## 52. arguments怎么转化成真数组
+
+- arguments是一个伪数组，是当前函数的内置对象，存储所有的形参，有length属性，但是不能用数组的方法。
+- [...arguments] 扩展运算符的方式，拿取剩余参数
+- Array.prototype.slice.call(arguments);使用call 一个对象调用另一个函数的方法，slice切割数组并返沪一个新的数组
+- [].slice.call() 因为[].slice === Array.prototype.slice
+- 遍历：arguments有length属性，所以，可以遍历arguments取出每一个元素，并放进新的数组中
 
 ## 53. js的对象的常用的方法
 
+```js
+Object.assign() //复制对象，创建一个新的对象
+Object.entries() //返回自身可枚举的[key,value]
+Object.keys()
+Object.values()
+Object.hasOwnProperty(key)//是否有这个属性 ttrue/false
+Object.getOwnPropertyNames() //取得对象自身可枚举的属性名
+//for in 对对象进行遍历，可以拿到自身以及原型链上的可枚举的属性
+Object.freeze()//冻结一个对象，不可修改，不可删除。不可添加新的属性
+Object.prototype.toString()// 返回数组[object,object/array/function等]  
+//判断是数组还是对象就是用的这个方法
+Object.defineProerty(obj,attr,descriptor)
+//可以对对象属性进行修改添加，删除等的操作
+//参数1，要操作的对象
+//参数2：要操作的属性名字
+//参数3：属性描述符：是否可枚举，是否可读，可写，他的值等
+```
+
 ## 54. js的字符串的常用的方法
 
+```js
+str.concat()//拼接
+str.includes()//判断字符串是否包含在另外啊一个字符串中
+str.indexOf()
+str.lastIndexOf()
+str.split() //按特定的符号分割成字符串数组！
+str.toLowerCase() //转换成小写的形式
+str.toUpperCase() //转换成大写的形式
+str.trim()//去空格
+str.substring(start,end) // 截取字串，不含开始，含结束，end可以小于start,会自动将小值
+str.slice() //截取字串，含开始，含结束，end不可以小于start
+str.substr(start,length)  //截取指定长度的串
+```
+
 ## 55. js的数组的常用的方法
+
+```js
+var arr = [0,1,2,3,4]
+
+arr.push()
+arr.pop()
+arr.shift()
+arr.unshift()
+arr.reverse()
+arr.every()
+arr.some()
+arr.forEach()
+arr.filter()
+arr.includes()
+arr.map()
+arr.reduce()
+arr.indexOf()
+arr.lastIndexOf() //索引正序，但是从后往前找
+arr.findIndex() //找索引
+arr.find()  //找满足条件的元素
+arr.join()//默认以逗号隔开
+arr.join(' ')//无缝链接 将数组元素拼接成字符串
+arr.slice(1,2)//截取数组的一部分，不包含头部，包含尾部，修改原数组
+arr.splice(1,4) //从索引1开始删除4个元素,第二个是要删除的长度，第三个往后是要添加的元素
+arr.splice(2,0,'i') //从索引2开始，删除0个，加入一个’i‘
+arr.aplice(3,1,'o','i')//从索引3开始，删除1个，添加两个字符串。
+arr.flat() //数组降维 ，返回新数组
+arr.flat(1)
+arr.flat(Infinity)
+arr.entries() //将数组返回一个对象，包含对象索引的键值对
+```
 
 ## 56. 谈谈对前端工程化的理解
