@@ -4,15 +4,15 @@
  * @Date: 2021-03-02 11:52:00
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-03-02 20:54:56
+ * @LastEditTime: 2021-03-04 19:31:06
  * @Description: file content
 -->
 <!-- TOC -->
 
 - [1. 手写一个闭包](#1-手写一个闭包)
-- [2. 函数节流与抖动](#2-函数节流与抖动)
-- [3. 手写一个 new](#3-手写一个-new)
-- [4. 手写一个count函数](#4-手写一个count函数)
+- [2. 手写一个count函数](#2-手写一个count函数)
+- [3. 函数节流与抖动](#3-函数节流与抖动)
+- [4. 手写一个 new](#4-手写一个-new)
 - [5. 手写一个 sleep 睡眠函数](#5-手写一个-sleep-睡眠函数)
 - [6. 实现一下继承 call apply bind](#6-实现一下继承-call-apply-bind)
 - [7. 实现一个forEach方法](#7-实现一个foreach方法)
@@ -81,7 +81,24 @@ for(let i = 1; i<5; i++) {
 }
 ```
 
-## 2. 函数节流与抖动
+## 2. 手写一个count函数
+
+每次调用一个函数自动加1
+
+```js
+ const count = (function () {
+   var a  = 0;
+   return function() {
+     console.log(++a)
+   }
+ })()
+
+ count(); // 1
+ count(); // 2
+ count(); // 3
+```
+
+## 3. 函数节流与抖动
 
 - 防抖：不管事件触发频率多高，一定是在时间触发`n`秒后才执行，如果在`n`秒内再次触发，就以再次触发的时间作为开始，重新计时
 - 节流：在一定时间内，不管触发了多少次回调，我只认第一次，并在计时结束后给予响应
@@ -131,7 +148,7 @@ function throttle(fn, time) {
 }
 ```
 
-## 3. 手写一个 new
+## 4. 手写一个 new
 
 - new 做了什么
   - 1、创建了一个空对象
@@ -156,11 +173,107 @@ function myNew() {
 }
 ```
 
-## 4. 手写一个count函数
-
 ## 5. 手写一个 sleep 睡眠函数
 
+ `sleep(1000)`代表等待`1000ms`执行
+
+```js
+//  方法一：ES5方法实现
+function sleep(callback, time) {
+  if(typeof callback == 'function') {
+    seTimeout(callback, time)
+  }
+};
+
+// 方法二：使用Promise方式
+const sleep = (time) => {
+  return new Promise((resolve) => {
+   setTimeout(resolve, time);
+  })
+}
+sleep(2000).then(() => {
+  console.log('方法')
+});
+
+// 方法三：利用async
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })
+}
+asymc function init() {
+  var temp = await sleep(2000);
+  console.log('方法')
+}
+```
+
 ## 6. 实现一下继承 call apply bind
+
+> 实现call方法
+
+实现思路：
+
+- 不传入第一个参数，那么默认为window
+- 改变`this`指向，让新的对象可以执行该函数，那么思路是否可以变成给新的对象添加一个函数，然后再执行完以后删除
+
+```js
+Function.Prototype.myCall = function(context) {
+  const context = context || window;
+  context.fn = this;
+  const args = [...arguments].slice(1);
+  const result = context.fn(...args);
+  delete context.fn;
+  return result;
+};
+
+// 测试
+const x = 0;
+function f(y,z) {
+  console.log(this.x + y + z);
+}
+const obj = {
+  x:1
+}
+fn.myCall(obj,3,2);
+```
+
+> 实现apply方法
+
+- `apply`实现思路和`call`差不多，只是再处理传入第二参数不同
+
+```js
+Function.prototype.myApply = function(context) {
+  const context = context || window;
+  context.fn = this
+  var result
+  if(arguments[1]) {
+    return result = context.fn(...arguments[1])
+  } else {
+    return context.fn()
+  }
+  delete context.fn;
+  return result;
+}
+```
+> 实现bind方法
+
+```js
+Function.prototype.myBind = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('Error')
+  }
+  var _this = this
+  var args = [...arguments].slice(1)
+  // 返回一个函数
+  return function F() {
+    // 因为返回了一个函数，我们可以 new F()，所以需要判断
+    if (this instanceof F) {
+      return new _this(...args, ...arguments)
+    }
+    return _this.apply(context, args.concat(...arguments))
+  }
+}
+```
 
 ## 7. 实现一个forEach方法
 
