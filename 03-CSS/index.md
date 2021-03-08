@@ -28,27 +28,136 @@
 <!-- /TOC -->
 ## 1. CSS3新特性
 
+- 伪类和伪元素选择器： `:first-child,:last-child,:nth-child(1),:link,::before, ::after`
+- 背景、边框和颜色透明度：`background-size, background-origin, border-radius box-shadow, border-image rgba`
+- 文字效果：`text-shadow, word-wrap`
+- 2D 转换和 3D 转换：`transform, translate(), rotate(), scale(), skew(), matrix() rotateX(), rotateY(), perspective`
+- 动画、过渡：`animation, transition`
+- 多列：`column-count, column-gap, column-rule`
+- 用户界面：`resize, box-sizing, outline-offset`
+
 ## 2. CSS 盒模型
+盒模型总共包括4个部分：
+* `content`：内容，容纳着元素的”真实“内容，例如文本，图像或是视频播放器
+* `padding`：内边距
+* `border`：边框
+* `margin`：外边距
+
+两种盒模型：W3C盒模型、IE盒模型 
+区别：
+* `W3C`盒模型中，通过`CSS`样式设置的`width`的大小只是`content`的大小
+* IE盒模型中，通过`CSS`样式设置的`width`的大小是`content + padding + border`
 
 ## 3. 设置一个元素的背景颜色，背景颜色会填充哪些区域
 
+`border + padding + content`
+
 ## 4. margin/padding 设置百分比是相对谁的
+
+`margin/padding`设置百分比都是相对于父盒子的宽度(`width`属性)
+先来看一个案例：假设一个div，宽400px，高200px，他有个子div的margin:10%，你来算下他的margin 的 top, right, bottom, left 是多少？
+
+
+```css
+.outer {
+    width: 400px;
+    height: 200px;
+    background-color: red;
+    position: relative;
+}
+.inner {
+    width: 100px;
+    height: 100px;
+    background-color: green;
+    position: absolute;
+    margin: 10%;
+}
+```
+
+```html
+<div class="outer">
+    <div class="inner"></div>
+</div> 
+```
+
 
 ## 5. link和@import的区别
 
+- `link`是`html`标签，不仅可以加载`css`文件，还可以定义`RSS、rel`连接属性等。`@import`是`css`提供的语法规则，只有导入样式表的作用
+- 加载页面时，`link`标签引入的`css`被同时加载；`@import`引入`css`将在页面加载完毕后被加载
+- `@import`是`CSS2.1`才有的语法，故只可在`IE5+`才能识别；`link`标签作为`HTML`元素，不存在兼容性问题。
+- 可以通过`js`操作`DOM`,插入`link`标签来改变样式；由于`DOM`方法是基于文档的，无法使用`@import`的方式插入样式。
+
 ## 6. CSS 选择器的解析规则
+
+从右向左，这样会提高查找选择器所对应的元素的效率
 
 ## 7. CSS 选择优先级
 
+选择器按优先级先后排列：`!important>内联>id>class = 属性 = 伪类 >标签 = 伪元素 > 通配符 *`
+
 ## 8. ::before和::after中双冒号和单冒号有什么区别？解释一下这2个伪元素的作用
+
+
+```shell
+在`css3`中使用单冒号来表示伪类，用双冒号来表示伪元素。但是为了兼容已有的伪元素的写法，在一些浏览器中也可以使用单冒号来表示伪元素。
+
+伪类一般匹配的是元素的一些特殊状态，如`hover`、`link`等，而伪元素一般匹配的特殊的位置，比如`after`、`before`等。
+```
 
 ## 9. 伪类与伪元素的区别
 
+* 伪类用于当已有的元素处于某个状态时，为其添加对应的样式，这个状态是根据用户行为而动态变化的。比如说，当用户悬停在指定的元素时，我们可以通过`:hover`来描述这个元素的状态。
+
+伪元素用于创建一些不在文档树中的元素，并为其添加样式。它们允许我们为元素的某些部分设置样式。比如说，我们可以通过`::before`来在一个元素前增加一些文本，并为这些文本添加样式。虽然用户可以看到这些文本，但是这些文本实际上不在文档树中。
+
 ## 10. CSS 中哪些属性可以继承
+
+* 字体相关的属性： `font-size、font-weight`
+* 文本相关的属性：`color、text-align`
+* 布局属性、列表属性：`list-style`
+* 光标属性：`cursor`
+* 元素可见性：`visibility`
+
+当一个属性不是继承属性的时候，我们也可以通过将它的值设置为`inherit`来使它从父元素那获取同名的属性值来继承。
 
 ## 11. 关于伪类LVHA的解释
 
+a标签有四种状态：链接访问前、链接访问后、鼠标滑过、激活，分别对应四种伪类`:link、:visited、:hover、:active；`
+
+当链接未访问过时：
+
+（1）当鼠标滑过`a`链接时，满足`:link`和`:hover`两种状态，要改变a标签的颜色，就必须将`:hover`伪类在`:link`伪类后面声明；
+（2）当鼠标点击激活`a`链接时，同时满足`:link`、`:hover`、`:active`三种状态，要显示a标签激活时的样式（`:active`），
+必须将`:active`声明放到`:link`和`:hover`之后。因此得出`LVHA`这个顺序。
+
+当链接访问过时，情况基本同上，只不过需要将`:link`换成`:visited`。
+
+这个顺序能不能变？可以，但也只有`:link`和`:visited`可以交换位置，因为一个链接要么访问过要么没访问过，不可能同时满足，也就不存在覆盖的问题。
+
 ## 12. CSS 清除浮动的方式
+
+* 额外标签法：在需要清除浮动的元素后面添加一个空白标签，设置类名` clear`，设置`clear: both`即可
+* 父级元素添加`overflow: hidden`;
+* 伪元素清除浮动; 对需要清除浮动的元素添加一个`clearfix`类名，设置样式如下：
+
+```css
+.clearfix:after {
+  /*正常浏览器 清除浮动*/
+  content: '';
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clearfix {
+  *zoom: 1;
+  /*zoom 1 就是ie6 清除浮动方式  * ie7以下的版本才能识别 其他浏览器都不执行(略过)*/
+}
+```
+
+
+
 
 ## 13. 清除浮动的原理
 
