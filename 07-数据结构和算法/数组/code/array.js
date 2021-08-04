@@ -4,7 +4,7 @@
  * @Date: 2021-07-30 14:00:47
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-07-30 18:00:33
+ * @LastEditTime: 2021-08-04 11:24:06
  * @Description: file content
  */
 /**
@@ -65,5 +65,38 @@ var removeDuplicates2 = function (nums) {
   return left + 1;
 };
 
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function (prices) {
+  let inPrices = 0;
+  for (let i = 0; i < prices.length - 1; i++) {
+    if (prices[i] < prices[i + 1]) {
+      const inM = prices[i + 1] - prices[i];
+      inPrices = inPrices + inM;
+    }
+  }
+  return inPrices;
+};
 
-console.log(removeDuplicates2([1,1,2]))
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var singleNumber = function (nums) {
+  for (let i = 0; i < nums.length; i++) {
+    const arryList = nums.filter(item => {
+      return item === nums[i]
+    })
+    console.log(arryList)
+    if (arryList.length === 1) {
+      return arryList[0]
+      break;
+    }
+  }
+};
+
+
+console.log(singleNumber([1, 1, 2]))
