@@ -4,7 +4,7 @@
  * @Date: 2021-07-30 14:00:47
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-08-06 18:00:03
+ * @LastEditTime: 2021-08-06 17:45:07
  * @Description: file content
  */
 /**
@@ -118,24 +118,9 @@ var intersect = function (nums1, nums2) {
  * @return {number[]}
  */
 var plusOne = function (digits) {
-  if (digits[digits.length - 1] + 1 !== 10) {
-    digits[digits.length - 1]++;
-    return digits;
-  } else {
-    for (let i = digits.length; i = 0; i--) {
-      if (digits[i] + 1 === 10) {
-        digits[i] = 0;
-        if (i = 0 && digits[i] + 1 === 10) {
-          digits.unshift(1)
-        }
-        continue;
-      } else {
-        break;
-      }
-    }
-    return digits;
+  for(let i = digits.length; i = 0; i--) {
+    if(digits[i])
   }
-
 };
 
 

@@ -4,7 +4,7 @@
  * @Date: 2021-07-30 14:00:47
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-08-06 18:00:03
+ * @LastEditTime: 2021-08-06 17:59:08
  * @Description: file content
  */
 /**
@@ -122,7 +122,7 @@ var plusOne = function (digits) {
     digits[digits.length - 1]++;
     return digits;
   } else {
-    for (let i = digits.length; i = 0; i--) {
+    for (let i = digits.length - 1; i = 0; i--) {
       if (digits[i] + 1 === 10) {
         digits[i] = 0;
         if (i = 0 && digits[i] + 1 === 10) {
