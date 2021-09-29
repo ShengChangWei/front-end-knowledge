@@ -4,7 +4,7 @@
  * @Date: 2021-07-30 14:00:47
  * @LastEditors: shengCW
  * @LastEmail: 2367896538@qq.com
- * @LastEditTime: 2021-08-06 18:00:03
+ * @LastEditTime: 2021-08-12 11:18:46
  * @Description: file content
  */
 /**
@@ -118,25 +118,85 @@ var intersect = function (nums1, nums2) {
  * @return {number[]}
  */
 var plusOne = function (digits) {
-  if (digits[digits.length - 1] + 1 !== 10) {
-    digits[digits.length - 1]++;
-    return digits;
-  } else {
-    for (let i = digits.length; i = 0; i--) {
-      if (digits[i] + 1 === 10) {
-        digits[i] = 0;
-        if (i = 0 && digits[i] + 1 === 10) {
-          digits.unshift(1)
-        }
-        continue;
-      } else {
-        break;
-      }
+  let len = digits.length
+  for (let i = len - 1; i >= 0; i--) {
+    if (digits[i] !== 9) {
+      digits[i]++;
+      return digits;
+    } else {
+      digits[i] = 0;
     }
-    return digits;
   }
-
+  // 这段代码使用于每个元素都是9
+  digits.unshift(1);
+  return digits;
 };
 
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function (nums) {
+  let len = nums.length - 1;
+  for (let i = len; i >= 0; i--) {
+    if (nums[i] === 0) {
+      nums.push(nums[i])
+      nums.splice(i, 1);
+    }
+  }
+  return nums;
+};
 
-console.log(singleNumber([1, 1, 2]))
+var moveZeroes2 = function (nums) {
+  if (nums == null || nums.length === 0) return;
+  let index = 0, len = nums.length;
+  for (let i = 0; i < len; i++) {
+    if (nums[i] !== 0) {
+      // index++ 是后加加
+      nums[index++] = nums[i];
+    }
+  }
+  while (index < len) {
+    nums[index++] = 0
+  }
+};
+
+// 双指针
+var moveZeroes3 = function (nums) {
+  if (nums == null || nums.length === 0) return;
+  let i = 0, len = nums.length;
+  for (let j = 0; j < len; j++) {
+    if (nums[j] !== 0) {
+      let temp = nums[i]
+      nums[i] = nums[j];
+      nums[j] = temp;
+      i++
+    }
+  }
+};
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function (nums, target) {
+  let len = nums.length
+  for (let i = 0; i < len - 1; i++) {
+    for (let j = i + 1; j < len; j++) {
+      if (nums[i] + nums[j] === target) return [i, j];
+    }
+  }
+};
+
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+ var twoSum = function (nums, target) {
+  let len = nums.length
+  
+};
+
+console.log(moveZeroes([1, 0, 0]))
